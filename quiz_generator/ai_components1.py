@@ -4,14 +4,11 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain ,create_extraction_chain,ConversationChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
-
-
+import plotly.graph_objects as go
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 llm = ChatOpenAI(model_name='gpt-4', temperature=0.0)
-
 memory = ConversationBufferMemory()
-
 
 
 def respond_to_query(query):
@@ -20,8 +17,8 @@ def respond_to_query(query):
         memory=memory,
     )
     return llm_agent.run(query)
-
 def sort_objects(obj_list):
+
     question = []
     options = []
     correct = []
@@ -29,22 +26,20 @@ def sort_objects(obj_list):
     for obj in obj_list:
 
         if 'question' in obj :
-
             question.append(obj['question'])
         for i in range(3):
-            option_list = []
-            if 'option1' in obj:
+            list=[]
+            if 'option1' in obj :
                 list.append(obj['option1'])
-            if 'option2' in obj:
+            if 'option2' in obj :
                 list.append(obj['option2'])
-            if 'option3' in obj:
+            if 'option3' in obj :
                 list.append(obj['option3'])
-        options.append(option_list)
-        if 'correct answer' in obj:
+        options.append(list)
+        if 'correct answer' in obj :
             correct.append(obj['correct answer'])
 
-    return [question, options, correct]
-
+    return [question,options,correct]
 
 def create_ques_ans(number_of_qn,board,classe, subject , lesson , topic,standard):
     if standard is "Basic":
@@ -66,28 +61,66 @@ def create_ques_ans(number_of_qn,board,classe, subject , lesson , topic,standard
 
 
     llm = ChatOpenAI(model = "gpt-4")
-
     schema = {
-        "properties": {
-            "question": {"type": "string"},
-            "option1": {"type": "string"},
-            "option2": {"type": "string"},
-            "option3": {"type": "string"},
-            "correct answer": {"type": "string"}
-        },
-        "required": ["question", "options", "correct_answer"]
+    "properties" : {
+        "question" : {"type" : "string"},
+        "option1" : {"type" : "string"},
+        "option2" : {"type" : "string"},
+        "option3" : {"type" : "string"},
+        "correct answer" : {"type" : "string"}
+    },
+    "required" : ["question", "options","correct_answer"]
     }
     chain = create_extraction_chain(schema, llm)
     response = chain.run(a)
+     
     return sort_objects(response) 
-
-def report(list):
+def report(list,score,total):
     
+    # Create the linear graph (line plot) with labeled sections
+    fig = go.Figure()
+
+# Create the linear graph (line plot) with labeled sections
+    fig.add_trace(go.Scatter(x=[0, total], y=[0, 100], mode='lines', line=dict(color='gray', dash='dash'), name='Diagonal Line'))
+    fig.add_trace(go.Scatter(x=[0.4*total, 0.4*total], y=[0, 100], mode='lines', line=dict(color='red', dash='dash'), name='40% Line'))
+    fig.add_trace(go.Scatter(x=[0.75*total, 0.75*total], y=[0, 100], mode='lines', line=dict(color='blue', dash='dash'), name='75% Line'))
+ 
+    point_x = score  # Replace this with the number of correct answers you want to plot
+    point_y = (score / total) * 100  # Calculate the percentage for the given point
+    fig.add_trace(go.Scatter(x=[point_x], y=[point_y], mode='markers', marker=dict(color='green', size=10), name='Plotted Point'))
+    fig.add_annotation(text=f'(you are here at {point_y:.2f}%)', x=point_x, y=point_y, showarrow=True, arrowhead=2)
+
+    fig.update_layout(
+        xaxis=dict(range=[0, total]),
+        yaxis=dict(range=[0, 100]),
+        xaxis_title='Number of Correct Answers',
+        yaxis_title='Percentage of Correct Responses',
+        title='Correct Answers vs. Percentage of Correct Responses',
+        showlegend=True
+    )
+
+    fig.add_shape(
+        type="line",
+        x0=point_x,
+        x1=point_x,
+        y0=0,
+        y1=point_y,
+        line=dict(color="gray", dash="dash"),
+    )
+
+    # Label the sections
+    fig.add_annotation(text='need to go through the lesson again', x=0, y=0, showarrow=False, font=dict(color='red'))
+    fig.add_annotation(text='revise concepts of marked wrong answers', x=0.4*score, y=40, showarrow=False, font=dict(color='blue'))
+    fig.add_annotation(text='well performed , look through solutions once', x=0.75*score, y=80, showarrow=False, font=dict(color='green'))
+
+    # Display the plot in Streamlit app using st.plotly_chart()
+    st.plotly_chart(fig)
+
+
     template =f"""U are provided with a list of questions {{question}} and list of coreesponding answers{list[1]} marked .
-    Give a report on this and suggest if any reading or clairty is required in concepts. dont write anythign unncesary"""
+    Suggest if any reading or clairty is required in concepts. dont write anythign unnecesary"""
     prompt = PromptTemplate.from_template(template)
     gpt4_model = ChatOpenAI(model="gpt-4")
     quizzer = LLMChain(prompt = prompt, llm = gpt4_model)
     a=quizzer.run(question=list[0])
     return a
-
