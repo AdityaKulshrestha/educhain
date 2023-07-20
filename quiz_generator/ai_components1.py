@@ -109,9 +109,9 @@ def report(list,score,total):
     )
 
     # Label the sections
-    fig.add_annotation(text='need to go through the lesson again', x=0, y=0, showarrow=False, font=dict(color='red'))
-    fig.add_annotation(text='revise concepts of marked wrong answers', x=0.4*score, y=40, showarrow=False, font=dict(color='blue'))
-    fig.add_annotation(text='well performed , look through solutions once', x=0.75*score, y=80, showarrow=False, font=dict(color='green'))
+    fig.add_annotation(text='need to go through the lesson again', x=0.15*total, y=0, showarrow=False, font=dict(color='red'))
+    fig.add_annotation(text='revise concepts of marked wrong answers', x=0.6*total, y=10, showarrow=False, font=dict(color='blue'))
+    fig.add_annotation(text='well performed , look through solutions once', x=0.85*total, y=0, showarrow=False, font=dict(color='green'))
 
     # Display the plot in Streamlit app using st.plotly_chart()
     st.plotly_chart(fig)
@@ -120,7 +120,7 @@ def report(list,score,total):
     template =f"""U are provided with a list of questions {{question}} and list of coreesponding answers{list[1]} marked .
     Suggest if any reading or clairty is required in concepts. dont write anythign unnecesary"""
     prompt = PromptTemplate.from_template(template)
-    gpt4_model = ChatOpenAI(model="gpt-4")
+    gpt4_model = ChatOpenAI(model="gpt-4",temperature=0.8)
     quizzer = LLMChain(prompt = prompt, llm = gpt4_model)
     a=quizzer.run(question=list[0])
     return a
