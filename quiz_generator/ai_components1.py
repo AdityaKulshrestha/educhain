@@ -82,8 +82,8 @@ def report(list,score,total):
 
 # Create the linear graph (line plot) with labeled sections
     fig.add_trace(go.Scatter(x=[0, total], y=[0, 100], mode='lines', line=dict(color='gray', dash='dash'), name='Diagonal Line'))
-    fig.add_trace(go.Scatter(x=[0.4*total, 0.4*total], y=[0, 100], mode='lines', line=dict(color='red', dash='dash'), name='40% Line'))
-    fig.add_trace(go.Scatter(x=[0.75*total, 0.75*total], y=[0, 100], mode='lines', line=dict(color='blue', dash='dash'), name='75% Line'))
+    fig.add_trace(go.Scatter(x=[0.4*total, 0.4*total], y=[0, 120], mode='lines', line=dict(color='red', dash='dash'), name='40% Line'))
+    fig.add_trace(go.Scatter(x=[0.75*total, 0.75*total], y=[0, 120], mode='lines', line=dict(color='blue', dash='dash'), name='75% Line'))
  
     point_x = score  # Replace this with the number of correct answers you want to plot
     point_y = (score / total) * 100  # Calculate the percentage for the given point
@@ -92,7 +92,7 @@ def report(list,score,total):
 
     fig.update_layout(
         xaxis=dict(range=[0, total]),
-        yaxis=dict(range=[0, 100]),
+        yaxis=dict(range=[0, 150]),
         xaxis_title='Number of Correct Answers',
         yaxis_title='Percentage of Correct Responses',
         title='Correct Answers vs. Percentage of Correct Responses',
@@ -109,9 +109,9 @@ def report(list,score,total):
     )
 
     # Label the sections
-    fig.add_annotation(text='need to go through the lesson again', x=0.15*total, y=0, showarrow=False, font=dict(color='red'))
-    fig.add_annotation(text='revise concepts of marked wrong answers', x=0.6*total, y=10, showarrow=False, font=dict(color='blue'))
-    fig.add_annotation(text='well performed , look through solutions once', x=0.85*total, y=0, showarrow=False, font=dict(color='green'))
+    fig.add_annotation(text='need to go through the lesson again', x=0.15*total, y=130, showarrow=False, font=dict(color='red'))
+    fig.add_annotation(text='revise concepts of wrong answers', x=0.5*total, y=125, showarrow=False, font=dict(color='blue'))
+    fig.add_annotation(text='well done , look at solutions once', x=0.95*total, y=130, showarrow=False, font=dict(color='green'))
 
     # Display the plot in Streamlit app using st.plotly_chart()
     st.plotly_chart(fig)
