@@ -5,6 +5,11 @@ from langchain.chains import LLMChain ,create_extraction_chain,ConversationChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 import plotly.graph_objects as go
+from langchain.chains.question_answering import load_qa_chain
+import pickle
+from langchain.vectorstores import Chroma
+from langchain.embeddings import SentenceTransformerEmbeddings
+
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 llm = ChatOpenAI(model_name='gpt-4', temperature=0.0)
@@ -48,19 +53,29 @@ def create_ques_ans(number_of_qn,board,classe, subject , lesson , topic,standard
         level="Applying, Analyzing"
     if standard is "Advanced":
         level="Evaluating or complex numerical"
-    template =f"""Prepare {number_of_qn} multiple choice questions on {{board}} board {classe} ,{subject} subject , {lesson} on {topic}
-    in {level} levels of blooms taxonomy. try to make the questions on true definitons and on numerical or application also  somewhat complicated
-    generate a python list which contains {number_of_qn} sublists . In each python sublist ,
-    first element should be the question. Second , third and fourth elements should be the only 3 options , 
-    and fifth element should be the complete correct option to the question exactly as in options .avoid unnecesary text connotations
-    , extra whitespaces and also avoid newlines anywhere , terminate the lists and strings correctly"""
-    prompt = PromptTemplate.from_template(template)
-    gpt4_model = ChatOpenAI(model="gpt-4")
-    quizzer = LLMChain(prompt = prompt, llm = gpt4_model)
-    a=quizzer.run(board=board)
-
-
+    
+    # template =f"""Prepare {number_of_qn} multiple choice questions on {board} board {classe} ,{subject} subject , {lesson} on {topic}
+    # in {level} levels of blooms taxonomy. generate a python list which contains {number_of_qn} sublists . In each python sublist ,
+    # first element should be the question. Second , third and fourth elements should be the only 3 options , 
+    # and fifth element should be the complete correct option to the question exactly as in options .avoid unnecesary text connotations,
+    # extra whitespaces and also avoid newlines anywhere , terminate the lists and strings correctly"""
+    template=template =f"""Create {number_of_qn} multiple choice questions on {lesson} on {topic} with 3 options
+    in {level} levels of blooms taxonomy. """
+    # generate a python list which contains {number_of_qn} sublists . In each python sublist ,
+    # first element should be the question. Second , third and fourth elements should be the only 3 options , 
+    # and fifth element should be the complete correct option to the question exactly as in options .avoid unnecesary text connotations,
+    # extra whitespaces and also avoid newlines anywhere , terminate the lists and strings correctly"""
+    
     llm = ChatOpenAI(model = "gpt-4")
+
+    embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    with open('/Users/dsp/Desktop/educhain-main/lesson_plan/Vector_DB/CBSE-9th-Motion.pkl','rb') as f:
+        chunks=pickle.load(f)
+    db = Chroma.from_texts(chunks,embedding=embeddings)
+    qa_chain = load_qa_chain(llm, chain_type="stuff",verbose=True)
+    matching_docs = db.similarity_search(template)
+    answer =  qa_chain.run(input_documents=matching_docs, question=template)
+
     schema = {
     "properties" : {
         "question" : {"type" : "string"},
@@ -71,8 +86,10 @@ def create_ques_ans(number_of_qn,board,classe, subject , lesson , topic,standard
     },
     "required" : ["question", "options","correct_answer"]
     }
-    chain = create_extraction_chain(schema, llm)
-    response = chain.run(a)
+    
+    llm2=ChatOpenAI(model="gpt-3.5-turbo-0613")
+    chain = create_extraction_chain(schema, llm2)
+    response = chain.run(answer)
      
     return sort_objects(response) 
 def report(list,score,total):
