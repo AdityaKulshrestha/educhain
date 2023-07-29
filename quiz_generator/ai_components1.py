@@ -69,7 +69,7 @@ def create_ques_ans(number_of_qn,board,classe, subject , lesson , topic,standard
     llm = ChatOpenAI(model = "gpt-4")
 
     embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-    with open('/Users/dsp/Desktop/educhain-main/lesson_plan/Vector_DB/CBSE-9th-Motion.pkl','rb') as f:
+    with open(os.getcwd()+'Vector_DB/CBSE-9th-Motion.pkl','rb') as f:
         chunks=pickle.load(f)
     db = Chroma.from_texts(chunks,embedding=embeddings)
     qa_chain = load_qa_chain(llm, chain_type="stuff",verbose=True)
