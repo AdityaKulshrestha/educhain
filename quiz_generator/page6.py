@@ -1,66 +1,81 @@
 import streamlit as st
 from ai_components1 import create_ques_ans,report
 import json
-import plotly.graph_objects as go
-import numpy as np
-
+from students import student
+stud=student()
 def app():
-    tab1= st.tabs(["Give a quick quiz!"])
-
+    
     st.title("Let's test your knowledge!")
-    st.header("Attempt this multiple choice based quiz and test your knowledge in all levels of learning!")
-
-    f = open('Syllabus1.json')
-  
-    data = json.load(f)
-
 
     session_state = st.session_state
+    
     if "quiz_data" not in session_state:
         session_state.quiz_data = None
     if "score" not in session_state:
         session_state.score = 0
+    
     board_placeholder=st.empty()
     class_placeholder=st.empty()
     subject_placeholder = st.empty()
     lesson_placeholder = st.empty()
+    button2=st.empty()
     topic_placeholder = st.empty()
     n_placeholder=st.empty()
     standard_placeholder=st.empty()
     button=st.empty()
-    
-    if session_state.quiz_data is None:
+
+    with open('Syllabus1.json','r') as f:
+        data=json.load(f)
+
+    if stud.get_board() == None or stud.get_lesson() == None or stud.get_std() == None or stud.get_subject() == None:
         board_names = [board["name"] for board in data["boards"]]
-        board = board_placeholder.selectbox("Select board",board_names)
+        board = board_placeholder.selectbox("select board which you are studying",board_names)
         board_list = next((b for b in data["boards"] if b["name"] == board), None)
 
         class_names = [Class["name"] for Class in board_list["classes"]]
-        classe = class_placeholder.selectbox("Select class",class_names)
+        classe = class_placeholder.selectbox("Select class in which you are studying",class_names)
         classe_list= next((b for b in board_list["classes"] if b["name"]==classe) , None)
 
         subject_names = [subject["name"] for subject in classe_list["subjects"]]
-        subject = subject_placeholder.selectbox("Select subject",subject_names)
+        subject = subject_placeholder.selectbox("Select subject which you want to study now",subject_names)
         subject_list= next((b for b in classe_list["subjects"] if b["name"]==subject) , None)
 
         lesson_names = [lesson["name"] for lesson in subject_list["lessons"]]
-        lesson = lesson_placeholder.selectbox("Select Lesson",lesson_names)
+        lesson = lesson_placeholder.selectbox("Select Lesson which you want to study now ",lesson_names)
         lesson_list= next((b for b in subject_list["lessons"] if b["name"]==lesson) , None)
+        if button2.button("Enter"):
+            stud.set_board(board)
+            stud.set_std(classe)
+            stud.set_subject(subject)
+            stud.set_lesson(lesson)
+            board_placeholder.empty()
+            class_placeholder.empty()
+            subject_placeholder.empty()
+            lesson_placeholder.empty()
+            button2.empty()
+    if stud.get_board() != None and stud.get_lesson() != None and stud.get_std() != None and stud.get_subject() != None:
+        board_list = next((b for b in data["boards"] if b["name"] == stud.get_board()), None)
+        classe_list= next((b for b in board_list["classes"] if b["name"]==stud.get_std()) , None)
+        subject_list= next((b for b in classe_list["subjects"] if b["name"]==stud.get_subject()) , None)
+        lesson_list= next((b for b in subject_list["lessons"] if b["name"]==stud.get_lesson()) , None)
         
+        data = [['Board',stud.get_board()],['Standard',stud.get_std()],['Subject',stud.get_subject()]]
+        table_markdown = "|   |   |\n" + "|---|---|\n" + "\n".join([f"| {row[0]} | {row[1]} |" for row in data])
+        st.sidebar.write('User details')
+        st.sidebar.markdown(table_markdown)
+
         topic = topic_placeholder.selectbox("Select topic",lesson_list["topics"])
         standard =standard_placeholder.selectbox("select the standard",["Basic","Intermediate","Advanced"])
         n = n_placeholder.number_input("Number of questions", min_value = 1 ,max_value = 25, value = 1, step = 1)
         if button.button("Generate"):
-            try:
-                    session_state.quiz_data = create_ques_ans(n, board ,classe , subject , lesson , topic,standard)
-                    n_placeholder.empty()
-                    board_placeholder.empty()
-                    class_placeholder.empty()
-                    subject_placeholder.empty()
-                    lesson_placeholder.empty()
-                    topic_placeholder.empty()
-                    standard_placeholder.empty()
-            except Exception as e :
-                    st.error("Please select valid number")
+            # try:
+            n_placeholder.empty()
+            standard_placeholder.empty()
+            with st.spinner(f"Generating Quiz "):
+                session_state.quiz_data = create_ques_ans(n, stud.get_board() ,stud.get_std() , stud.get_subject() , stud.get_lesson() , topic ,standard)
+                    
+            # except Exception as e :
+            #         st.error("Please select valid number")
     if session_state.quiz_data:
         questions = session_state.quiz_data[0]
         options = session_state.quiz_data[1]
@@ -101,3 +116,4 @@ def app():
                 session_state.quiz_data = None
                 session_state.score = 0
                 st.experimental_rerun()
+            
