@@ -4,8 +4,6 @@ import json
 from students import student
 stud=student()
 def app():
-    
-    st.title("Let's test your knowledge!")
 
     session_state = st.session_state
     
@@ -13,7 +11,7 @@ def app():
         session_state.quiz_data = None
     if "score" not in session_state:
         session_state.score = 0
-    
+    title_placeholder=st.empty()
     board_placeholder=st.empty()
     class_placeholder=st.empty()
     subject_placeholder = st.empty()
@@ -28,6 +26,7 @@ def app():
         data=json.load(f)
 
     if stud.get_board() == None or stud.get_lesson() == None or stud.get_std() == None or stud.get_subject() == None:
+        title_placeholder.title("Enter Credentials")
         board_names = [board["name"] for board in data["boards"]]
         board = board_placeholder.selectbox("select board which you are studying",board_names)
         board_list = next((b for b in data["boards"] if b["name"] == board), None)
@@ -54,16 +53,16 @@ def app():
             lesson_placeholder.empty()
             button2.empty()
     if stud.get_board() != None and stud.get_lesson() != None and stud.get_std() != None and stud.get_subject() != None:
+        title_placeholder.header(f"You are studying {stud.get_lesson()} chapter")
+        st.subheader(f"Where do you want to test your knowledge")
         board_list = next((b for b in data["boards"] if b["name"] == stud.get_board()), None)
         classe_list= next((b for b in board_list["classes"] if b["name"]==stud.get_std()) , None)
         subject_list= next((b for b in classe_list["subjects"] if b["name"]==stud.get_subject()) , None)
         lesson_list= next((b for b in subject_list["lessons"] if b["name"]==stud.get_lesson()) , None)
         
-        data = [['Board',stud.get_board()],['Standard',stud.get_std()],['Subject',stud.get_subject()]]
-        table_markdown = "|   |   |\n" + "|---|---|\n" + "\n".join([f"| {row[0]} | {row[1]} |" for row in data])
-        st.sidebar.write('User details')
-        st.sidebar.markdown(table_markdown)
-
+        st.sidebar.metric(label="Board", value=stud.get_board())
+        st.sidebar.metric(label="Standard", value=stud.get_std())
+        
         topic = topic_placeholder.selectbox("Select topic",lesson_list["topics"])
         standard =standard_placeholder.selectbox("select the standard",["Basic","Intermediate","Advanced"])
         n = n_placeholder.number_input("Number of questions", min_value = 1 ,max_value = 25, value = 1, step = 1)
@@ -95,6 +94,7 @@ def app():
                 choice = st.radio("", options_, key=i)
                 if choice:
                     ans.append(choice)
+                st.divider()
             if session_state.quiz_data:
                 submitted = st.form_submit_button("Submit")
             else:
@@ -109,7 +109,8 @@ def app():
                     if ans[i] != user_input:
                         question_placeholder.error(f" Wrong! , right answer is {answers[i]}")
                 st.success("Test Score - " + str(session_state.score))
-                st.success(f"{report([questions,ans],session_state.score,len(answers))}")
+                with st.spinner(f"Generating Quiz "):
+                    st.success(f"{report([questions,ans],session_state.score,len(answers))}")
         if session_state.quiz_data :
             new_quiz = st.button("new quiz")
             if new_quiz:
