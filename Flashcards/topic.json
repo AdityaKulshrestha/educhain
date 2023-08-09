@@ -1,0 +1,390 @@
+{
+  "boards": [
+    {
+      "name": "CBSE",
+      "classes": [
+        {
+          "name": "Class 7",
+          "subjects": [
+            {
+              "name": "Science",
+              "lessons": [
+                {
+                  "name": "Matter and its Nature",
+                  "counter": 4,
+                  "topics": [
+                    {
+                      "name": "Matter",
+                      "difficulty": 15,
+                      "revised": 15
+                    },
+                    {
+                      "name": "Classification of Matter",
+                      "difficulty": 2,
+                      "revised": 14
+                    },
+                    {
+                      "name": "Physical and Chemical Changes",
+                      "difficulty": 15,
+                      "revised": 11
+                    },
+                    {
+                      "name": "Separation of Mixtures",
+                      "difficulty": 25,
+                      "revised": 14
+                    }
+                  ],
+                  "difficulty": 15,
+                  "revised": 54,
+                  "days_since_studying": 50
+                },
+                {
+                  "name": "Atoms and Molecules",
+                  "counter": 17.5,
+                  "topics": [
+                    {
+                      "name": "Atoms",
+                      "difficulty": 2,
+                      "revised": 6
+                    },
+                    {
+                      "name": "Subatomic Particles",
+                      "difficulty": 1,
+                      "revised": 4
+                    },
+                    {
+                      "name": "Atomic Number",
+                      "difficulty": 2,
+                      "revised": 7
+                    },
+                    {
+                      "name": "Mass Number",
+                      "difficulty": 15,
+                      "revised": 6
+                    },
+                    {
+                      "name": "Isotopes",
+                      "difficulty": 7,
+                      "revised": 6
+                    },
+                    {
+                      "name": "Valency",
+                      "difficulty": 2,
+                      "revised": 4
+                    }
+                  ],
+                  "difficulty": 5,
+                  "revised": 33,
+                  "days_since_studying": 32
+                },
+                {
+                  "name": "Bonding in Chemistry",
+                  "counter": 4,
+                  "topics": [
+                    {
+                      "name": "Ionic Bonding",
+                      "difficulty": 15,
+                      "revised": 2
+                    },
+                    {
+                      "name": "Covalent Bonding",
+                      "difficulty": 15,
+                      "revised": 5
+                    },
+                    {
+                      "name": "Coordinate Bonding",
+                      "difficulty": 25,
+                      "revised": 4
+                    },
+                    {
+                      "name": "Valence Bond Theory",
+                      "difficulty": 7,
+                      "revised": 0
+                    }
+                  ],
+                  "difficulty": 13,
+                  "revised": 11,
+                  "days_since_studying": 12
+                },
+                {
+                  "name": "The Periodic Table",
+                  "counter": 5,
+                  "topics": [
+                    {
+                      "name": "Periodic Table",
+                      "difficulty": 2,
+                      "revised": 0
+                    },
+                    {
+                      "name": "Properties of Elements in Periodic Table",
+                      "difficulty": 15,
+                      "revised": 6
+                    },
+                    {
+                      "name": "S-Block Elements",
+                      "difficulty": 4,
+                      "revised": 2
+                    },
+                    {
+                      "name": "P-Block Elements",
+                      "difficulty": 7,
+                      "revised": 7
+                    },
+                    {
+                      "name": "d-Block Elements",
+                      "difficulty": 1,
+                      "revised": 5
+                    },
+                    {
+                      "name": "f-Block Elements",
+                      "difficulty": 2,
+                      "revised": 4
+                    }
+                  ],
+                  "difficulty": 5,
+                  "revised": 24,
+                  "days_since_studying": 38
+                },
+                {
+                  "name": "Combustion and Flame",
+                  "counter": 5.9,
+                  "topics": [
+                    {
+                      "name": "Combustion",
+                      "difficulty": 25,
+                      "revised": 4
+                    },
+                    {
+                      "name": "Flame",
+                      "difficulty": 25,
+                      "revised": 7
+                    },
+                    {
+                      "name": "Types of Combustion",
+                      "difficulty": 15,
+                      "revised": 4
+                    },
+                    {
+                      "name": "Combustion Reaction",
+                      "difficulty": 7,
+                      "revised": 6
+                    },
+                    {
+                      "name": "Prevention of Fire",
+                      "difficulty": 25,
+                      "revised": 0
+                    }
+                  ],
+                  "difficulty": 22,
+                  "revised": 21,
+                  "days_since_studying": 4
+                },
+                {
+                  "name": "Forces in Nature",
+                  "counter": 23.5,
+                  "topics": [
+                    {
+                      "name": "Force",
+                      "difficulty": 7,
+                      "revised": 8
+                    },
+                    {
+                      "name": "Types of Forces",
+                      "difficulty": 2,
+                      "revised": 8
+                    },
+                    {
+                      "name": "Mechanical Advantage",
+                      "difficulty": 15,
+                      "revised": 5
+                    },
+                    {
+                      "name": "Work",
+                      "difficulty": 7,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Energy",
+                      "difficulty": 2,
+                      "revised": 8
+                    },
+                    {
+                      "name": "Power",
+                      "difficulty": 1,
+                      "revised": 2
+                    }
+                  ],
+                  "difficulty": 8,
+                  "revised": 32,
+                  "days_since_studying": 26
+                },
+                {
+                  "name": "Sound",
+                  "counter": 1,
+                  "topics": [
+                    {
+                      "name": "Sound",
+                      "difficulty": 15,
+                      "revised": 2
+                    },
+                    {
+                      "name": "Production of Sound",
+                      "difficulty": 1,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Propagation of Sound",
+                      "difficulty": 4,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Reflection of Sound",
+                      "difficulty": 25,
+                      "revised": 5
+                    },
+                    {
+                      "name": "Refraction of Sound",
+                      "difficulty": 4,
+                      "revised": 0
+                    },
+                    {
+                      "name": "Doppler Effect",
+                      "difficulty": 7,
+                      "revised": 3
+                    }
+                  ],
+                  "difficulty": 12,
+                  "revised": 12,
+                  "days_since_studying": 5
+                },
+                {
+                  "name": "Light",
+                  "counter": 39.0,
+                  "topics": [
+                    {
+                      "name": "Light",
+                      "difficulty": 2,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Electromagnetic Spectrum",
+                      "difficulty": 25,
+                      "revised": 5
+                    },
+                    {
+                      "name": "Reflection of Light",
+                      "difficulty": 1,
+                      "revised": 7
+                    },
+                    {
+                      "name": "Refraction of Light",
+                      "difficulty": 1,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Dispersion of Light",
+                      "difficulty": 25,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Spherical Mirrors",
+                      "difficulty": 25,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Lenses",
+                      "difficulty": 15,
+                      "revised": 7
+                    }
+                  ],
+                  "difficulty": 24,
+                  "revised": 23,
+                  "days_since_studying": 26
+                },
+                {
+                  "name": "Magnetism and Electricity",
+                  "counter": 19,
+                  "topics": [
+                    {
+                      "name": "Magnetism",
+                      "difficulty": 4,
+                      "revised": 4
+                    },
+                    {
+                      "name": "Magnetic Field",
+                      "difficulty": 25,
+                      "revised": 2
+                    },
+                    {
+                      "name": "Magnetic Lines of Force",
+                      "difficulty": 7,
+                      "revised": 4
+                    },
+                    {
+                      "name": "Magnetic Poles",
+                      "difficulty": 7,
+                      "revised": 3
+                    },
+                    {
+                      "name": "Magnetic Induction",
+                      "difficulty": 25,
+                      "revised": 7
+                    },
+                    {
+                      "name": "Electromagnetism",
+                      "difficulty": 25,
+                      "revised": 7
+                    },
+                    {
+                      "name": "Electricity",
+                      "difficulty": 1,
+                      "revised": 3
+                    },
+                    {
+                      "name": "Conductors",
+                      "difficulty": 1,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Insulators",
+                      "difficulty": 4,
+                      "revised": 5
+                    },
+                    {
+                      "name": "Semi-conductors",
+                      "difficulty": 4,
+                      "revised": 5
+                    },
+                    {
+                      "name": "Electric Current",
+                      "difficulty": 15,
+                      "revised": 2
+                    },
+                    {
+                      "name": "Potential Difference",
+                      "difficulty": 1,
+                      "revised": 6
+                    },
+                    {
+                      "name": "Resistance",
+                      "difficulty": 1,
+                      "revised": 1
+                    },
+                    {
+                      "name": "Ohm's Law",
+                      "difficulty": 2,
+                      "revised": 4
+                    }
+                  ],
+                  "difficulty": 26,
+                  "revised": 54,
+                  "days_since_studying": 47
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
